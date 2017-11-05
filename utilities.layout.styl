@@ -1,0 +1,62 @@
+$layout_hash = {
+  init: initial
+  inherit: inherit
+  center: center
+  start: flex-start
+  end: flex-end
+}
+
+$j_layout_hash = merge({
+  around: space-around
+  between: space-between
+}, $layout_hash)
+
+$a_layout_hash = merge({
+  stretch: stretch
+  baseline: baseline
+}, $layout_hash)
+
+for class_suffix, layout in $j_layout_hash
+  .flex-j-{class_suffix}
+    justify-content layout
+
+  .flex-j-{class_suffix}-i
+    justify-content layout !important
+
+  .flex-v-center-j-{class_suffix}
+    display flex
+    align-items center
+    justify-content layout
+
+for class_suffix, layout in $a_layout_hash
+  .flex-a-{class_suffix}
+    align-items layout
+
+  .flex-a-{class_suffix}-i
+    align-items layout !important
+
+  .flex-as-{class_suffix}
+    align-self layout
+
+  .flex-as-{class_suffix}-i
+    align-self layout !important
+
+  .flex-h-center-a-{class_suffix}
+    display flex
+    align-items layout
+    justify-content center
+
+.flex
+  display flex
+.flex-i
+  display flex !important
+
+.iflex
+  display inline-flex
+.iflex-i
+  display inline-flex !important
+
+.flex-center
+  display flex
+  align-items center
+  justify-content center

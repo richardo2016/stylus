@@ -1,0 +1,82 @@
+@require './variables'
+
+$offset-unit        ?= $size-unit
+/**
+ *
+ *  get the utility class such as
+ *   .mr-xs
+ *     margin-right ($offset-unit / 2)
+ *   .mr-sm
+ *     margin-right $offset-unit
+ *   .ml-xs
+ *     margin-left ($offset-unit / 2)
+ *   .ml-sm
+ *     margin-left $offset-unit
+ */
+for name in ('margin' 'padding')
+  prefixer = substr(name, 0, 1)
+
+  for direction in $directions
+    dprefixer = substr(direction, 0, 1)
+
+    final_prefixer = prefixer + dprefixer
+    for size, time in $times_of_offset
+      .{final_prefixer}-{size}-i
+        {name}-{direction} ($offset-unit * time) !important
+
+      .{final_prefixer}-{size}
+        {name}-{direction} ($offset-unit * time)
+
+    .no-{final_prefixer}
+      {name}-{direction} 0
+
+    .no-{final_prefixer}-i
+      {name}-{direction} 0 !important
+/**
+ *
+ *  get the utility class such as
+ *   .no-margin-right
+ *     margin-right 0
+ *   .no-padding-top
+ *     padding-top 0
+ */
+// dprecated
+for direction in $directions
+  .no-margin-{direction}
+    margin-{direction} 0 !important
+  .no-padding-{direction}
+    padding-{direction} 0 !important
+
+/**
+ */
+ut_gen_dir(name, size, dir)
+  if dir is 'v'
+    {name}-top size
+    {name}-bottom size
+  if dir is 'h'
+    {name}-left size
+    {name}-right size
+
+for name in ('margin' 'padding')
+  .no-v-{name}
+    ut_gen_dir(name, 0, 'v')
+  .no-v-{name}-i
+    ut_gen_dir(name, 0 !important, 'v')
+
+  .no-h-{name}
+    ut_gen_dir(name, 0, 'h')
+  .no-h-{name}-i
+    ut_gen_dir(name, 0 !important, 'h')
+
+  for size, time in $times_of_offset
+    .{name}-{size}
+      {name} $offset-unit * time
+
+    .{name}-v-{size}
+      ut_gen_dir(name, $offset-unit * time, 'v')
+
+    .{name}-h-{size}
+      ut_gen_dir(name, $offset-unit * time, 'h')
+
+    .{name}-{size}
+      {name} $offset-unit * time

@@ -1,0 +1,26 @@
+// pre-defined iteration constant
+$directions = ('top' 'left' 'bottom' 'right')
+$sizes = ('xs' 'sm' 'md' 'gd' 'lg' 'vt')
+
+$size-unit          ?= 8px
+
+$root-font-size     ?= 14px
+$mobile-size-unit   ?= .5rem
+$support-mobile     ?= false
+
+$times_of_size      ?= {
+  xs: .5
+  sm: 1
+  md: 2
+  gd: 3
+  lg: 4
+  vt: 6
+}
+$times_of_offset    ?= merge({}, $times_of_size)
+
+// font
+$font-family        ?= 'PingFang SC', 'Roboto', 'Noto Sans SC', caption, 'Microsoft YaHei', sans-serif
+$mobile-font-family ?= "Helvetica Neue", Helvetica, STHeiTi, Arial, sans-serif
+
+// colors
+$anchor-color       ?= #0091ea

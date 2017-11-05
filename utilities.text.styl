@@ -1,0 +1,53 @@
+@require './variables.styl'
+
+.txt-btn
+  $normal-color   ?= #333333
+  $disabled-color ?= #eeeeee
+
+  cursor pointer
+  text-decoration none
+
+  &, &.default
+    color $normal-color
+
+  &:hover
+    text-decoration none
+
+  &.primary
+    color $anchor-color
+
+  &.disabled
+    color $disabled-color
+    cursor not-allowed
+
+.text-center
+  text-align center
+
+.txt-iblock
+  display inline-block
+
+.J_pointer, [role="J_anchor"]
+  cursor pointer
+
+.text-x-ellipsis
+  text-overflow ellipsis
+  overflow-x hidden
+  display inline-block
+
+if $support-mobile
+  $font-unit ?= 'rem'
+
+  $font_size_hash ?= {
+    xs: unit(1.2, $font-unit)
+    sm: unit(1.4, $font-unit)
+    mm: unit(1.6, $font-unit)
+    md: unit(1.8, $font-unit)
+    xd: unit(2.0, $font-unit)
+    ml: unit(2.2, $font-unit)
+    lg: unit(2.4, $font-unit)
+    xl: unit(2.8, $font-unit)
+  }
+
+  for size_name, size in $font_size_hash
+    .rfz-{size_name}
+      font-size size
