@@ -1,0 +1,78 @@
+@require '../variables'
+
+$offset-unit        ?= $size-unit
+/**
+ *
+ *  mixins such as
+ *   'mr-xs'
+ *     margin-right ($offset-unit / 2)
+ *   'mr-sm'
+ *     margin-right $offset-unit
+ *   'ml-xs'
+ *     margin-left ($offset-unit / 2)
+ *   'ml-sm'
+ *     margin-left $offset-unit
+ */
+$sizify_hash = {}
+$sizify_list_hash = {}
+
+for name in ('margin' 'padding')
+  prefixer = substr(name, 0, 1)
+
+  for direction in $directions
+    dprefixer = substr(direction, 0, 1)
+
+    final_prefixer = prefixer + dprefixer
+
+    for size, time in $times_of_offset
+      $sizify_hash[join('-', final_prefixer, size)] = {
+        property: name + '-' + direction
+        value: $offset-unit * time
+      }
+      $sizify_hash[join('-', final_prefixer, size, 'i')] = {
+        property: name + '-' + direction
+        value: $offset-unit * time !important
+      }
+      $sizify_hash[join('-', 'no', final_prefixer)] = {
+        property: name + '-' + direction
+        value: 0
+      }
+      $sizify_hash[join('-', 'no', final_prefixer, 'i')] = {
+        property: name + '-' + direction
+        value: 0 !important
+      }
+
+  /**
+   *  mixins such as
+   *   'no-margin-right'
+   *     margin-right 0
+   *   'no-padding-top'
+   *     padding-top 0
+   */
+  $sizify_list_hash[join('-', 'no', 'v', name)] = ($sizify_hash['no-'+prefixer+'t'] $sizify_hash['no-'+prefixer+'b'])
+  $sizify_list_hash[join('-', 'no', 'h', name)] = ($sizify_hash['no-'+prefixer+'l'] $sizify_hash['no-'+prefixer+'r'])
+
+  for size, time in $times_of_offset
+    $l = $sizify_hash[prefixer+'l-'+size]
+    $r = $sizify_hash[prefixer+'r-'+size]
+    $t = $sizify_hash[prefixer+'t-'+size]
+    $b = $sizify_hash[prefixer+'b-'+size]
+
+    $sizify_list_hash[join('-', name, 'v', size)] = ($t $b)
+    $sizify_list_hash[join('-', name, 'h', size)] = ($l $r)
+    $sizify_list_hash[name+'-'+size] = ($l $r $t $b)
+
+sizify(name)
+  $kv = $sizify_hash[name]
+  if $kv
+    $k = $kv.property
+    $v = $kv.value
+    {$k} $v
+
+  $kv_list = $sizify_list_hash[name]
+  if $kv_list
+    for $_kv, index in $kv_list
+      $_k = $_kv.property
+      $_v = $_kv.value
+      {$_k} $_v
+

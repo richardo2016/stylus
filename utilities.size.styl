@@ -1,6 +1,4 @@
-@require './variables'
-
-$offset-unit        ?= $size-unit
+@require './mixins/size.styl'
 /**
  *
  *  get the utility class such as
@@ -22,16 +20,16 @@ for name in ('margin' 'padding')
     final_prefixer = prefixer + dprefixer
     for size, time in $times_of_offset
       .{final_prefixer}-{size}-i
-        {name}-{direction} ($offset-unit * time) !important
+        sizify(join('-', final_prefixer, size, 'i'))
 
       .{final_prefixer}-{size}
-        {name}-{direction} ($offset-unit * time)
+        sizify(join('-', final_prefixer, size))
 
     .no-{final_prefixer}
-      {name}-{direction} 0
+      sizify('no-' + final_prefixer)
 
     .no-{final_prefixer}-i
-      {name}-{direction} 0 !important
+      sizify('no-' + final_prefixer + '-i')
 /**
  *
  *  get the utility class such as
@@ -40,43 +38,28 @@ for name in ('margin' 'padding')
  *   .no-padding-top
  *     padding-top 0
  */
-// dprecated
 for direction in $directions
   .no-margin-{direction}
     margin-{direction} 0 !important
   .no-padding-{direction}
     padding-{direction} 0 !important
 
-/**
- */
-ut_gen_dir(name, size, dir)
-  if dir is 'v'
-    {name}-top size
-    {name}-bottom size
-  if dir is 'h'
-    {name}-left size
-    {name}-right size
-
 for name in ('margin' 'padding')
   .no-v-{name}
-    ut_gen_dir(name, 0, 'v')
+    sizify('no-v-' + name)
   .no-v-{name}-i
-    ut_gen_dir(name, 0 !important, 'v')
-
+    sizify('no-v-' + name + '-i')
   .no-h-{name}
-    ut_gen_dir(name, 0, 'h')
+    sizify('no-h-' + name)
   .no-h-{name}-i
-    ut_gen_dir(name, 0 !important, 'h')
+    sizify('no-h-' + name + '-i')
 
   for size, time in $times_of_offset
     .{name}-{size}
-      {name} $offset-unit * time
+      sizify(join('-', name, size))
 
     .{name}-v-{size}
-      ut_gen_dir(name, $offset-unit * time, 'v')
+      sizify(join('-', name, 'v', size))
 
     .{name}-h-{size}
-      ut_gen_dir(name, $offset-unit * time, 'h')
-
-    .{name}-{size}
-      {name} $offset-unit * time
+      sizify(join('-', name, 'h', size))

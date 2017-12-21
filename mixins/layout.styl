@@ -1,0 +1,33 @@
+$layout_hash = {
+  init: initial
+  inherit: inherit
+  center: center
+  start: flex-start
+  end: flex-end
+}
+
+$j_layout_hash = merge({
+  around: space-around
+  between: space-between
+}, $layout_hash)
+
+$a_layout_hash = merge({
+  stretch: stretch
+  baseline: baseline
+}, $layout_hash)
+
+
+flex()
+  display flex
+
+iflex()
+  display inline-flex
+
+flex-a(aValue)
+  align-items $a_layout_hash[aValue]
+
+flex-as(aValue)
+  align-self $a_layout_hash[aValue]
+
+flex-j(aValue)
+  justify-content $j_layout_hash[aValue]
